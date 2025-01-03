@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: phoenix-sat-backend
+  datasource:
+    url: jdbc:postgresql://localhost:5432/business-management?currentSchema=public
+    username: postgres
+    password: huseynderya
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+        default_schema: public
+    hibernate:
+      ddl-auto: none
+    open-in-view:
+    show-sql: true
+  liquibase:
+    change-log: classpath:/db/changelog/changelog-master.xml
+    default-schema: public
+    liquibase-schema: public
+    enabled: true
+
+security:
+  auth:
+    whitelist: >
+      /swagger-resources,
+      /swagger-resources/**,
+      /configuration/ui,  
+      /configuration/security,
+      /swagger-ui.html,
+      /webjars/**,
+      /api/public/**,
+      /v3/api-docs/**,
+      /v3/api-docs,
+      /swagger-ui/**,
+      /v2/api-docs,
+      /api/v1/public/**,
+      /ws-registration/**,
+      /api/v1/public/accounts/**,
+      /actuator/**
+
+  jwt:
+    secret-key: test

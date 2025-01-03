@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="insert-organisation" author="smdovn42@gmail.com">
+        <insert tableName="organisations">
+            <column name="id" value="d290f1ee6c544b019f82778268b2e0aa"/>
+            <column name="name" value="Tech Solutions"/>
+            <column name="created_at" valueDate="2024-12-01T10:00:00"/>
+        </insert>
+    </changeSet>
+
+    <!-- Insert users for the organization -->
+    <changeSet id="insert-users" author="smdovn42@gmail.com">
+        <insert tableName="users">
+            <column name="id" value="6c544b019d290f1eef82778268b2e0aa"/>
+            <column name="username" value="Admin123"/>
+            <column name="password" value="$2a$12$W8/O6R3du7gClzzRUiQPf.RN4LtIL7h1Y7SF3Ri1dpVBHujCzlix2"/>
+            <column name="name" value="Alice Admin"/>
+            <column name="organisation_id" value="d290f1ee6c544b019f82778268b2e0aa"/>
+            <column name="role" value="ADMIN"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" value="26c544b019d90f1eef82778268b2e0aa"/>
+            <column name="username" value="Bob1"/>
+            <column name="password" value="$2a$12$YNtxYiaqwzw643FMlfMc6uPokVq.V3r8s9gSirffpO6ju1NK23YU6"/>
+            <column name="name" value="Bob Seller"/>
+            <column name="organisation_id" value="d290f1ee6c544b019f82778268b2e0aa"/>
+            <column name="role" value="USER"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" value="d90f1eef8226c544b019778268b2e0aa"/>
+            <column name="username" value="Charlie1"/>
+            <column name="password" value="$2a$12$XwZShXHpRnsd7CW84iSdwuhio967aJ7bAhYvLZFdikF4YBT2Vw292"/>
+            <column name="name" value="Charlie Seller"/>
+            <column name="organisation_id" value="d290f1ee6c544b019f82778268b2e0aa"/>
+            <column name="role" value="USER"/>
+        </insert>
+    </changeSet>
+
+    <!-- Insert 20 products -->
+    <changeSet id="insert-products" author="smdovn42@gmail.com">
+        <insert tableName="products">
+            <column name="id" value="prod-001"/>
+            <column name="name" value="Laptop"/>
+            <column name="code" value="LP001"/>
+            <column name="colour" value="Silver"/>
+            <column name="quantity" value="10"/>
+            <column name="cost" value="800.00"/>
+            <column name="other_infos" value="High-performance laptop"/>
+            <column name="organisation_id" value="d290f1ee6c544b019f82778268b2e0aa"/>
+            <column name="create_date" valueDate="2024-12-01T10:00:00"/>
+        </insert>
+        <insert tableName="products">
+            <column name="id" value="prod-002"/>
+            <column name="name" value="Smartphone"/>
+            <column name="code" value="SP002"/>
+            <column name="colour" value="Black"/>
+            <column name="quantity" value="50"/>
+            <column name="cost" value="300.00"/>
+            <column name="other_infos" value="Latest model with AI features"/>
+            <column name="organisation_id" value="d290f1ee6c544b019f82778268b2e0aa"/>
+            <column name="create_date" valueDate="2024-12-01T10:00:00"/>
+        </insert>
+        <!-- Repeat for 18 more products -->
+        <insert tableName="products">
+            <column name="id" value="prod-003"/>
+            <column name="name" value="Tablet"/>
+            <column name="code" value="TB003"/>
+            <column name="colour" value="White"/>
+            <column name="quantity" value="20"/>
+            <column name="cost" value="200.00"/>
+            <column name="organisation_id" value="d290f1ee6c544b019f82778268b2e0aa"/>
+            <column name="other_infos" value="Lightweight and portable"/>
+            <column name="create_date" valueDate="2024-12-01T10:00:00"/>
+        </insert>
+        <!-- ... continue up to prod-020 -->
+    </changeSet>
+</databaseChangeLog>

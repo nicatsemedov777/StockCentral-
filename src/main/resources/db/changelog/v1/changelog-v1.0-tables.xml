@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="create_organisations_table" author="smdovn42@gmail.com">
+        <createTable tableName="organisations">
+            <column name="id" type="char(32)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(100)"/>
+            <column name="created_at" type="timestamp without timezone"/>
+        </createTable>
+    </changeSet>
+    
+    <changeSet id="create_users_table" author="smdovn42@gmail.com">
+        <createTable tableName="users">
+            <column name="id" type="char(32)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="username" type="varchar(50)"/>
+            <column name="password" type="varchar(100)"/>
+            <column name="name" type="varchar(50)"/>
+            <column name="organisation_id" type="char(32)"/>
+            <column name="role" type="role_type"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="users" 
+                                 baseColumnNames="organisation_id" 
+                                 constraintName="org_user_id"
+                                 referencedTableName="organisations"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+    
+    <changeSet id="create_products_table" author="smdovn42@gmail.com">
+        <createTable tableName="products">
+            <column name="id" type="char(32)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(100)"/>
+            <column name="code" type="varchar(100)"/>
+            <column name="colour" type="varchar(50)"/>
+            <column name="quantity" type="double"/>
+            <column name="cost" type="double"/>
+            <column name="other_infos" type="varchar(255)"/>
+            <column name="organisation_id" type="char(32)"/>
+            <column name="create_date" type="timestamp without timezone"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="products"
+                                 baseColumnNames="organisation_id"
+                                 constraintName="prod_org_id"
+                                 referencedTableName="organisations"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="create_sales_records_table" author="smdon42@gmail.com">
+        <createTable tableName="sales_records">
+            <column name="id" type="char(32)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="selling_price" type="double"/>
+            <column name="profit_quantity" type="double"/>
+            <column name="quantity_of_product_sold" type="double"/>
+            <column name="product_id" type="char(32)"/>
+            <column name="user_id" type="char(32)"/>
+            <column name="sale_date" type="timestamp without timezone"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="sales_records"
+                                 baseColumnNames="product_id"
+                                 constraintName="sale_product_id"
+                                 referencedTableName="products"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="sales_records"
+                                 baseColumnNames="user_id"
+                                 constraintName="sale_user_id"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+
+    </changeSet>
+
+
+</databaseChangeLog>
