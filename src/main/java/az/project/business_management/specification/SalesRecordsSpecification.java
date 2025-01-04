@@ -2,6 +2,7 @@ package az.project.business_management.specification;
 
 import az.project.business_management.entity.SalesRecord;
 import az.project.business_management.model.request.RecordsFilter;
+import az.project.business_management.util.DateHelper;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
@@ -44,11 +45,11 @@ public class SalesRecordsSpecification implements Specification<SalesRecord> {
         }
 
         if (filter.getMinDate() != null) {
-            predicates.add(cb.greaterThanOrEqualTo(root.get("saleDate"), new Date(filter.getMinDate())));
+            predicates.add(cb.greaterThanOrEqualTo(root.get("saleDate"), DateHelper.convertAzeDateToUTC(filter.getMinDate())));
         }
 
         if (filter.getMaxDate() != null) {
-            predicates.add(cb.lessThanOrEqualTo(root.get("saleDate"), new Date(filter.getMaxDate())));
+            predicates.add(cb.lessThanOrEqualTo(root.get("saleDate"), DateHelper.convertAzeDateToUTC(filter.getMaxDate())));
         }
         return cb.and(predicates.toArray(new Predicate[0]));
     }

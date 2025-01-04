@@ -18,7 +18,7 @@
             <column name="id" value="6c544b019d290f1eef82778268b2e0aa"/>
             <column name="username" value="Admin123"/>
             <column name="password" value="$2a$12$W8/O6R3du7gClzzRUiQPf.RN4LtIL7h1Y7SF3Ri1dpVBHujCzlix2"/>
-            <column name="name" value="Alice Admin"/>
+            <column name="full_name" value="Alice Admin"/>
             <column name="organisation_id" value="d290f1ee6c544b019f82778268b2e0aa"/>
             <column name="role" value="ADMIN"/>
         </insert>
@@ -26,7 +26,7 @@
             <column name="id" value="26c544b019d90f1eef82778268b2e0aa"/>
             <column name="username" value="Bob1"/>
             <column name="password" value="$2a$12$YNtxYiaqwzw643FMlfMc6uPokVq.V3r8s9gSirffpO6ju1NK23YU6"/>
-            <column name="name" value="Bob Seller"/>
+            <column name="full_name" value="Bob Seller"/>
             <column name="organisation_id" value="d290f1ee6c544b019f82778268b2e0aa"/>
             <column name="role" value="USER"/>
         </insert>
@@ -34,9 +34,17 @@
             <column name="id" value="d90f1eef8226c544b019778268b2e0aa"/>
             <column name="username" value="Charlie1"/>
             <column name="password" value="$2a$12$XwZShXHpRnsd7CW84iSdwuhio967aJ7bAhYvLZFdikF4YBT2Vw292"/>
-            <column name="name" value="Charlie Seller"/>
+            <column name="full_name" value="Charlie Seller"/>
             <column name="organisation_id" value="d290f1ee6c544b019f82778268b2e0aa"/>
             <column name="role" value="USER"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" value="226c544b01977826d90f1eef88b2e0aa"/>
+            <column name="username" value="Nicatinki"/>
+            <column name="password" value="$2a$12$NzjDnncsK6eGSmQzir.MdOLyM7Rq.9fMLBGPBMNK6E3upqB/Ca312"/>
+            <column name="full_name" value="Nicat Samadov"/>
+            <column name="organisation_id" value="d290f1ee6c544b019f82778268b2e0aa"/>
+            <column name="role" value="ADMIN"/>
         </insert>
     </changeSet>
 

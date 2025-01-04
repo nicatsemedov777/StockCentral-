@@ -10,6 +10,7 @@ import az.project.business_management.model.request.SellProductRequest;
 import az.project.business_management.model.response.ProductResponse;
 import az.project.business_management.repository.ProductRepository;
 import az.project.business_management.repository.SalesRecordRepository;
+import az.project.business_management.util.DateHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,7 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final UserInfo userInfo;
     private final SalesRecordRepository salesRecordRepository;
+    private final TurnoverService turnoverService;
 
     public void insertProduct(InsertProductRequest insertProductRequest) {
         Product product = productBuilder(insertProductRequest);
@@ -39,16 +41,17 @@ public class ProductService {
     }
 
     private ProductResponse productResponseMapper(Product product) {
+
         return ProductResponse.builder()
                 .productId(product.getId())
                 .name(product.getName())
                 .code(product.getCode())
                 .colour(product.getColour())
-                .cost(product.getCost())
                 .quantity(product.getQuantity())
+                .cost(product.getCost())
                 .otherDetails(product.getOtherInfos())
-                .insertedAt(product.getCreateDate().getTime())
-                .organisationName(userInfo.getOrganisation().getName())
+                .organisationName(product.getOrganisation().getName())
+                .insertedAt(DateHelper.convertUTCDateToAzeDateWithMillis(product.getCreateDate()))
                 .build();
     }
 
@@ -73,11 +76,16 @@ public class ProductService {
         if (product.getQuantity() < sellProductRequest.quantity())
             throw new ProductIsOutOfStockException("The product quantity is not sufficient for the entered quantity.");
 
-        SalesRecord salesRecord = buildSalesRecord(sellProductRequest, product);
+        SalesRecord salesRecord = salesRecordRepository.save(buildSalesRecord(sellProductRequest, product));
         product.setQuantity(product.getQuantity() - sellProductRequest.quantity());
 
+
+        var turnoverHistory = turnoverService.updateDailyTurnover(salesRecord);
+        salesRecord.setTurnoverHistory(turnoverHistory);
         salesRecordRepository.save(salesRecord);
+
         productRepository.save(product);
+
     }
 
     private SalesRecord buildSalesRecord(SellProductRequest sellProductRequest, Product product) {
@@ -85,7 +93,7 @@ public class ProductService {
         return SalesRecord.builder()
                 .product(product)
                 .user(userInfo.getUser())
-                .sellingPriceOfProduct(sellProductRequest.sellingPrice())
+                .sellingPrice(sellProductRequest.sellingPrice())
                 .totalProfit(profit * sellProductRequest.quantity())
                 .quantityOfProductSold(sellProductRequest.quantity())
                 .build();

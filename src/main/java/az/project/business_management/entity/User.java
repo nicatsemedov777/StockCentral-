@@ -23,7 +23,8 @@ public class User {
     @GenericGenerator(name = "idGenerator", type = IdGenerator.class)
     private String id;
 
-    private String name;
+    @Column(name = "full_name")
+    private String fullName;
     private String username;
     private String password;
 

@@ -6,10 +6,9 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
-@Table(name = "organisations")
+@Table(name = "turnover_history")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -17,19 +16,18 @@ import java.util.Date;
 @Builder
 @ToString
 @EqualsAndHashCode
-public class Organisation {
+public class TurnoverHistory {
     @Id
     @GeneratedValue(generator = "idGenerator")
     @GenericGenerator(name = "idGenerator", type = IdGenerator.class)
     private String id;
 
-    private String name;
+    private LocalDate localDate;
 
-    @Column(name = "created_at")
-    private Date createDate;
+    @Column(name = "total_turnover")
+    private Double totalTurnover;
 
-    @PrePersist
-    private void setDate() {
-        this.createDate = new Date();
-    }
+    @ManyToOne
+    @JoinColumn(name = "organisation_id")
+    private Organisation organisation;
 }

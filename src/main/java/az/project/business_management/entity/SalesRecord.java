@@ -23,13 +23,16 @@ public class SalesRecord {
     private String id;
 
     @Column(name = "selling_price")
-    private Double sellingPriceOfProduct;
+    private Double sellingPrice;
 
     @Column(name = "profit_quantity")
     private Double totalProfit;
 
     @Column(name = "quantity_of_product_sold")
     private Double quantityOfProductSold;
+
+    @Column(name = "total_sale")
+    private Double totalSale;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
@@ -39,11 +42,18 @@ public class SalesRecord {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "turnover_history_id")
+    private TurnoverHistory turnoverHistory;
+
     @Column(name = "sale_date")
     private Date saleDate;
 
     @PrePersist
-    private void setDate() {
+    private void setDateAndTotalSale() {
         this.saleDate = new Date();
+        this.totalSale = quantityOfProductSold * sellingPrice;
     }
+
+
 }

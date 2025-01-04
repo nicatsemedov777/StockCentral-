@@ -21,7 +21,7 @@
             </column>
             <column name="username" type="varchar(50)"/>
             <column name="password" type="varchar(100)"/>
-            <column name="name" type="varchar(50)"/>
+            <column name="full_name" type="varchar(50)"/>
             <column name="organisation_id" type="char(32)"/>
             <column name="role" type="role_type"/>
         </createTable>
@@ -52,6 +52,20 @@
                                  referencedTableName="organisations"
                                  referencedColumnNames="id"/>
     </changeSet>
+    <changeSet id="2025-01-04-create_turnover_history_table" author="smdovn42@gmail.com">
+        <createTable tableName="turnover_history">
+            <column name="id" type="char(32)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="local_date" type="date"/>
+            <column name="total_turnover" type="double"/>
+            <column name="organisation_id" type="char(32)"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="turnover_history" baseColumnNames="organisation_id"
+                                 constraintName="fk_org_turnover"
+                                 referencedTableName="organisations"
+                                 referencedColumnNames="id"/>
+    </changeSet>
 
     <changeSet id="create_sales_records_table" author="smdon42@gmail.com">
         <createTable tableName="sales_records">
@@ -64,7 +78,14 @@
             <column name="product_id" type="char(32)"/>
             <column name="user_id" type="char(32)"/>
             <column name="sale_date" type="timestamp without timezone"/>
+            <column name="total_sale" type="double"/>
+            <column name="turnover_history_id" type="char(32)"/>
         </createTable>
+        <addForeignKeyConstraint baseTableName="sales_records"
+                                 baseColumnNames="turnover_history_id"
+                                 constraintName="records_turnover_fk"
+                                 referencedTableName="turnover_history"
+                                 referencedColumnNames="id"/>
         <addForeignKeyConstraint baseTableName="sales_records"
                                  baseColumnNames="product_id"
                                  constraintName="sale_product_id"
@@ -77,6 +98,8 @@
                                  referencedColumnNames="id"/>
 
     </changeSet>
+    
+
 
 
 </databaseChangeLog>
