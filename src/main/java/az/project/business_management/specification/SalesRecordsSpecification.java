@@ -51,6 +51,6 @@ public class SalesRecordsSpecification implements Specification<SalesRecord> {
         if (filter.getMaxDate() != null) {
             predicates.add(cb.lessThanOrEqualTo(root.get("saleDate"), DateHelper.convertAzeDateToUTC(filter.getMaxDate())));
         }
-        return cb.and(predicates.toArray(new Predicate[0]));
+        return cb.and(predicates.toArray(Predicate[]::new));
     }
 }

@@ -15,7 +15,5 @@ public class RecordsFilter {
     private String productId;
     private Long minDate;
     private Long maxDate;
-
-    @JsonIgnore
     private String organisationId;
 }

@@ -14,34 +14,22 @@ import az.project.business_management.specification.SalesRecordsSpecification;
 import az.project.business_management.util.DateHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class SalesRecordService {
     private final SalesRecordRepository salesRecordRepository;
-    private final UserInfo userInfo;
     private final TurnoverHistoryRepository turnoverHistoryRepository;
     private final ProductRepository productRepository;
 
 
     public Page<SalesRecordsResponse> getSalesRecordsPage(RecordsFilter recordsFilter, Pageable pageable) {
-
-        recordsFilter.setOrganisationId(userInfo.getOrganisation().getId());
-
         SalesRecordsSpecification recordsSpecification = new SalesRecordsSpecification(recordsFilter);
-
         Page<SalesRecord> recordsPage = salesRecordRepository.findAll(recordsSpecification, pageable);
-
-        List<SalesRecordsResponse> salesRecordsResponseList = recordsPage.get().toList().stream().map(SalesRecordService::buildSalesRecordResponse).toList();
-
-        return new PageImpl<>(salesRecordsResponseList, pageable, salesRecordsResponseList.size());
-
+        return recordsPage.map(SalesRecordService::buildSalesRecordResponse);
     }
 
     private static SalesRecordsResponse buildSalesRecordResponse(SalesRecord salesRecord) {
@@ -74,7 +62,7 @@ public class SalesRecordService {
         );
         turnoverHistoryRepository.updateTurnoverHistory(
                 refundProductRequest.salesRecordId(),
-                refundProductRequest.quantityOfRefundedProduct()* salesRecord.getSellingPrice()
+                refundProductRequest.quantityOfRefundedProduct() * salesRecord.getSellingPrice()
         );
 
         if (salesRecord.getQuantityOfProductSold() - refundProductRequest.quantityOfRefundedProduct() == 0) {

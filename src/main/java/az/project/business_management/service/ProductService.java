@@ -6,12 +6,17 @@ import az.project.business_management.error.exception.ProductIsOutOfStockExcepti
 import az.project.business_management.error.exception.ResourceNotFoundException;
 import az.project.business_management.model.jwt.UserInfo;
 import az.project.business_management.model.request.InsertProductRequest;
+import az.project.business_management.model.request.ProductsFilter;
 import az.project.business_management.model.request.SellProductRequest;
 import az.project.business_management.model.response.ProductResponse;
 import az.project.business_management.repository.ProductRepository;
 import az.project.business_management.repository.SalesRecordRepository;
+import az.project.business_management.specification.ProductsSpecification;
 import az.project.business_management.util.DateHelper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,9 +40,10 @@ public class ProductService {
         productRepository.saveAll(products);
     }
 
-    public List<ProductResponse> getAll() {
-        List<Product> responseList = productRepository.findAllByOrganisationId(userInfo.getOrganisation().getId());
-        return responseList.stream().map(this::productResponseMapper).toList();
+    public Page<ProductResponse> getAll(ProductsFilter productsFilter, Pageable pageable) {
+        ProductsSpecification productsSpecification = new ProductsSpecification(productsFilter);
+        Page<Product> responseList = productRepository.findAll(productsSpecification, pageable);
+        return responseList.map(this::productResponseMapper);
     }
 
     private ProductResponse productResponseMapper(Product product) {
